@@ -98,13 +98,13 @@ class PriceWaiter extends PaymentModule
 			$this->context = Context::getContext();
 
 		$product = new Product((int)Tools::getValue('id_product'));
-		$raw_attributes = Attribute::getAttributes($this->context->language->id);
+		$raw_attributes = Product::getAttributesInformationsByProduct($product->id);
 		$attributes = array();
 		foreach ($raw_attributes as $attr)
 		{
 			$attributes[$attr['id_attribute']] = array(
-				'label' => $attr['public_name'],
-				'value' => $attr['name'],
+				'label' => $attr['group'],
+				'value' => $attr['attribute'],
 			);
 		}
 
@@ -115,6 +115,7 @@ class PriceWaiter extends PaymentModule
 			$combo = array(
 				'attributes' => $raw_combo['attributes'],
 				'specific_price' => $raw_combo['specific_price'],
+				'quantity' => $raw_combo['quantity'],
 			);
 			if ($raw_combo['id_image'] > 0)
 			{
@@ -160,6 +161,13 @@ class PriceWaiter extends PaymentModule
 		}
 
 		$image_type = $product->link_rewrite[$this->context->cart->id_lang];
+
+		# ensure JS sees these as falsy if empty
+		if (count($attributes) == 0)
+			$attributes = false;
+
+		if (count($combinations) == 0)
+			$combinations = false;
 
 		$smarty_properties = array(
 			'pw_api_key' => Configuration::get('PRICEWAITER_API_KEY'),
@@ -361,15 +369,14 @@ class PriceWaiter extends PaymentModule
 		$cart_rule = new CartRule();
 
 		$cart_rule->id_customer = $cart->id_customer;
-		$cart_rule->date_from = date('Y-m-d H:i:s', time() - 43200);
-		$cart_rule->date_to = date('Y-m-d H:i:s', time() + 43200);
+		$cart_rule->date_from = date('Y-m-d H:i:s', time() - 60);
+		$cart_rule->date_to = date('Y-m-d H:i:s', time() + 60);
 		$cart_rule->description = 'Discount negotiated on PriceWaiter.';
 		$cart_rule->quantity = $product_list[0]['cart_quantity'];
 		$cart_rule->quantity_per_user = $product_list[0]['cart_quantity'];
-		$cart_rule->code = $cart->gift_message;
 		$cart_rule->reduction_amount = $discount;
 		$cart_rule->reduction_currency = $cart->id_currency;
-		$cart_rule->reduction_product = $product_list[0]['id'];
+		$cart_rule->reduction_product = $product_list[0]['id_product'];
 		$cart_rule->active = true;
 		$cart_rule->name = array(Configuration::get('PS_LANG_DEFAULT') => $cart->gift_message);
 		$cart_rule->add();

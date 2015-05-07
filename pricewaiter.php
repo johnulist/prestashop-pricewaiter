@@ -503,7 +503,6 @@ class PriceWaiter extends PaymentModule
 		$fields_form = array(
 			array('form' => array())
 		);
-		$fields_form = [['form' => []]];
 		$fields_form[0]['form'] = array(
 			'legend' => array(
 				'title' => $this->l('Settings'),

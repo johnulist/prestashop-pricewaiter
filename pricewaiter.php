@@ -490,7 +490,8 @@ class PriceWaiter extends PaymentModule
 		}
 
 		$category_options = array();
-		foreach (Category::getCategories(false, true)[1] as $cat)
+		$available_categories = Category::getCategories(false, true);
+		foreach ($available_categories[1] as $cat)
 		{
 			$category_options[] = array(
 				'id' => $cat['infos']['id_category'],

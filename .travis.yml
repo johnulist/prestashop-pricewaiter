@@ -7,6 +7,6 @@ php:
   - hhvm
 script:
     - php -l pricewaiter.php
-    - vendor/bin/phpcs --standard=Prestashop pricewaiter.php
+    - vendor/bin/phpcs --standard=PrestashopCodingstandard pricewaiter.php
 install:
     - composer require konafets/prestashop-codingstandard:@dev

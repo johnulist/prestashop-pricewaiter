@@ -7,6 +7,7 @@ php:
   - hhvm
 script:
     - php -l pricewaiter.php
-    - vendor/bin/phpcs --standard=PrestashopCodingstandard pricewaiter.php
+    - vendor/bin/phpcs --standard=Prestashop pricewaiter.php
 install:
-    - composer require konafets/prestashop-codingstandard:@dev
+    - composer require squizlabs/php_codesniffer
+    - git clone https://github.com/PrestaShop/PrestaShop-norm-validator.git vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/Prestashop

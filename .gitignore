@@ -1,1 +1,3 @@
 pwconfig.local.php
+composer.*
+/vendor

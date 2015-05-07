@@ -499,6 +499,9 @@ class PriceWaiter extends PaymentModule
 		}
 
 		// Init Fields form array
+		$fields_form = array(
+			array('form' => array())
+		);
 		$fields_form = [['form' => []]];
 		$fields_form[0]['form'] = array(
 			'legend' => array(

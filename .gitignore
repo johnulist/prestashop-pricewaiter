@@ -1,3 +1,4 @@
 pwconfig.local.php
 composer.*
 /vendor
+*.zip

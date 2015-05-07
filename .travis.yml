@@ -8,6 +8,7 @@ php:
 script:
     - php -l pricewaiter.php
     - vendor/bin/phpcs --standard=Prestashop pricewaiter.php
+    - phpunit
 install:
-    - composer require squizlabs/php_codesniffer
+    - composer require squizlabs/php_codesniffer smarty/smarty
     - git clone https://github.com/PrestaShop/PrestaShop-norm-validator.git vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/Prestashop

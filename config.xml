@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>pricewaiter</name>
+	<displayName><![CDATA[PriceWaiter widget and notification bundle]]></displayName>
+	<version><![CDATA[0.9.1]]></version>
+	<description><![CDATA[Provides an easy way to set up the PriceWaiter widget and order notification to let your customers negotiate their own price.]]></description>
+	<author><![CDATA[PriceWaiter]]></author>
+	<tab><![CDATA[pricing_promotion]]></tab>
+	<confirmUninstall>Are you sure you want to uninstall the PriceWaiter bundle?</confirmUninstall>
+	<is_configurable>1</is_configurable>
+	<need_instance>0</need_instance>
+	<limited_countries></limited_countries>
+</module>

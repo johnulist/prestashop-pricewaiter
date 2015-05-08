@@ -46,7 +46,7 @@
 
 <div id="pricewaiter" class="text-center">
     <h1><img src="{$module_dir}/views/img/logo_retina.png" width="200" height="71" alt="PriceWaiter" /></h1>
-    {if Configuration::get('PRICEWAITER_API_KEY') != '' }
+    {if Configuration::get('PRICEWAITER_API_KEY') == '' }
     <fieldset class="pw-install-group"><legend>Create PriceWaiter Account</legend>
         <p>To use the PriceWaiter service you will need obtain an API Key by signing up for an account.</p>
         <a class="pw-button" href="{$pw_signup_url|escape:'html':'UTF-8'}" target="blank">Sign up here!</a>

@@ -44,7 +44,7 @@ class SmartyTest extends PHPUnit_Framework_TestCase
 	{
 		$s = new Smarty();
 		$s->assign('module_dir', '');
-		$s->assign('pw_signup_url', '');
+		$s->assign('pw_button_config_url', '');
 		$s->setTemplateDir(dirname(__FILE__).'/../views/templates/');
 		$output = $s->fetch('admin/configure.tpl');
 		$this->assertNotEmpty($output);

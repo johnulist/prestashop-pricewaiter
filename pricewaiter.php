@@ -358,7 +358,7 @@ class PriceWaiter extends PaymentModule
 	private function createCartRule($cart, $amount_paid)
 	{
 		$product_list = $cart->getProducts();
-		$total = (float)$cart->getOrderTotal(false, Cart::ONLY_PRODUCTS, $product_list, $cart->id_carrier);
+		$total = (float)$cart->getOrderTotal(true, Cart::ONLY_PRODUCTS, $product_list, $cart->id_carrier);
 		$discount = $total - $amount_paid;
 
 		// reuse existing cart rule

@@ -402,6 +402,13 @@ class PriceWaiter extends PaymentModule
 		if (!$context->currency)
 			$context->currency = new Currency($cart->id_currency);
 
+		if (!$context->link) {
+			$protocol_link = (Configuration::get('PS_SSL_ENABLED') || Tools::usingSecureMode()) ? 'https://' : 'http://';
+			$useSSL = ((isset($this->ssl) && $this->ssl && Configuration::get('PS_SSL_ENABLED')) || Tools::usingSecureMode()) ? true : false;
+			$protocol_content = ($useSSL) ? 'https://' : 'http://';
+			$context->link = new Link($protocol_link, $protocol_content);
+		}
+
 		// unset gift message used for internal PW id.
 		$cart->gift_message = '';
 		$cart->save();

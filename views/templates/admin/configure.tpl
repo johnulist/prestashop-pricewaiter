@@ -27,7 +27,16 @@
 *  @copyright 2014-2015 PriceWaiter LLC
 *  @license   http://opensource.org/licenses/MIT
 *}
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css">
+<script type="text/javascript">
+$(document).ready(function() {
+    $('select[multiple]').chosen({
+        // brackets for this obj MUST be on separate lines or Smarty blows up
+        width: "400px"
+    });
+});
+</script>
 <style>
 .pw-install-group {
     margin-bottom: 10px !important;

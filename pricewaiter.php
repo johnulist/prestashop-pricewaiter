@@ -487,6 +487,7 @@ class PriceWaiter extends PaymentModule
 	{
 		// Get default Language
 		$default_lang = (int)Configuration::get('PS_LANG_DEFAULT');
+		$db = Db::getInstance();
 
 		$product_options = array();
 		foreach (Product::getProducts($default_lang, 0, 0, 'id_product', 'asc', false, true, $this->context) as $prod)
@@ -498,12 +499,20 @@ class PriceWaiter extends PaymentModule
 		}
 
 		$category_options = array();
-		$available_categories = Category::getCategories(false, true);
-		foreach ($available_categories[1] as $cat)
+
+		$sql = 'SELECT * FROM `'._DB_PREFIX_.'category` c
+			LEFT OUTER JOIN `'._DB_PREFIX_.'category_lang` cl
+			ON c.`id_category` = cl.`id_category`
+			WHERE cl.`id_lang` = '.$default_lang.'
+			ORDER BY c.`id_parent` ASC';
+		$categories = $db->executeS($sql);
+		foreach ($categories as $cat)
 		{
+			if ($cat['name'] === 'Root')
+				continue;
 			$category_options[] = array(
-				'id' => $cat['infos']['id_category'],
-				'name' => $cat['infos']['name'],
+				'id' => $cat['id_category'],
+				'name' => $cat['name'],
 			);
 		}
 

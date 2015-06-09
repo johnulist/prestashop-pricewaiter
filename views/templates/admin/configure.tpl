@@ -64,7 +64,7 @@ $(document).ready(function() {
     {else}
     <fieldset class="pw-install-group"><legend>Customize PriceWaiter Button</legend>
         <p>You can easily customize PriceWaiter's button to match your store's look and feel.</p>
-        <a class="pw-button" href="{$pw_button_config_url|escape:'html':'UTF-8'}" target="blank">Configure</a>
+        <a class="pw-button" href="{$pw_manage_url|escape:'html':'UTF-8'}/stores/{Configuration::get('PRICEWAITER_API_KEY')}/campaigns" target="blank">Configure</a>
     </fieldset>
     {/if}
 </div>

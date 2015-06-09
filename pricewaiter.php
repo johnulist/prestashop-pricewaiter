@@ -431,6 +431,7 @@ class PriceWaiter extends PaymentModule
 
 		$this->context->smarty->assign(array(
 			'pw_signup_url' => $pw_signup_url,
+			'pw_manage_url' => _PW_MANAGE_SERVER_,
 		));
 
 		$pw_api_key = Configuration::get('PRICEWAITER_API_KEY');
@@ -459,17 +460,6 @@ class PriceWaiter extends PaymentModule
 
 			if (count($pw_disabled_objects) > 0)
 				$change = true;
-		}
-
-		if (isset($pw_api_key) && $pw_api_key !== '')
-		{
-			$pw_button_config_url = _PW_MANAGE_SERVER_.'/stores/'.$pw_api_key.'/button';
-			$this->context->smarty->assign(array('pw_button_config_url' => $pw_button_config_url));
-		}
-		elseif (isset($new_pw_api_key) && $new_pw_api_key !== 0)
-		{
-			$pw_button_config_url = _PW_MANAGE_SERVER_.'/stores/'.$new_pw_api_key.'/button'; // fixes blank api key on initial refresh after save
-			$this->context->smarty->assign(array('pw_button_config_url' => $pw_button_config_url));
 		}
 
 		if ($success && $change)

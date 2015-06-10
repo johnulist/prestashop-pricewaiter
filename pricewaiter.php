@@ -190,11 +190,12 @@ class PriceWaiter extends PaymentModule
 			'pw_ps_version' => _PS_VERSION_,
 		);
 
-		if (Configuration::get('PRICEWAITER_CUSTOM_CSS')) {
+		if (Configuration::get('PRICEWAITER_CUSTOM_CSS'))
+		{
 			$custom_css = Configuration::get('PRICEWAITER_CUSTOM_CSS');
 			$custom_css = str_replace(array('\r\n', '\n', '\r'), '', htmlspecialchars(strip_tags($custom_css)));
 			$custom_css = htmlspecialchars($custom_css);
-			$this->context->smarty->assign(array('pw_custom_css' => Configuration::get('PRICEWAITER_CUSTOM_CSS')));
+			$this->context->smarty->assign(array('pw_custom_css' => $custom_css));
 		}
 
 		$this->context->smarty->assign($smarty_properties);

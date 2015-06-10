@@ -88,6 +88,8 @@ class PriceWaiter extends PaymentModule
 		&& Configuration::deleteByName('PRICEWAITER_API_KEY')
 		&& Configuration::deleteByName('PRICEWAITER_API_ACCESS_TOKEN')
 		&& Configuration::deleteByName('PRICEWAITER_SIGNUP_TOKEN')
+		&& Configuration::deleteByName('PRICEWAITER_BUTTON_DISABLED')
+		&& Configuration::deleteByName('PRICEWAITER_CONVERSION_DISABLED')
 		&& $this->deleteWSKey($db)
 		&& $this->deletePWDisableTable($db);
 	}

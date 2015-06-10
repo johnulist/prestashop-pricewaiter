@@ -476,15 +476,13 @@ class PriceWaiter extends PaymentModule
 
 			$pw_disabled_objects = $this->getSelectedObjectsToDisable($button_cats, $button_products, $exit_cats, $exit_products);
 
-			if (count($pw_disabled_objects) > 0)
-				$change = true;
+			$db->query('TRUNCATE TABLE '._DB_PREFIX_.'pw_disable;');
+			$db->autoExecute(_DB_PREFIX_.'pw_disable', $pw_disabled_objects, 'INSERT');
 		}
 
 		if ($success && $change)
 		{
 			Configuration::updateValue('PRICEWAITER_API_KEY', $new_pw_api_key);
-			$db->query('TRUNCATE TABLE '._DB_PREFIX_.'pw_disable;');
-			$db->autoExecute(_DB_PREFIX_.'pw_disable', $pw_disabled_objects, 'INSERT');
 			$output .= $this->displayConfirmation($this->l('Settings updated'));
 		}
 
@@ -497,7 +495,7 @@ class PriceWaiter extends PaymentModule
 		$default_lang = (int)Configuration::get('PS_LANG_DEFAULT');
 		$db = Db::getInstance();
 
-		$product_options = array();
+		$product_options = array(array('id' => '', 'name' => ''));
 		foreach (Product::getProducts($default_lang, 0, 0, 'id_product', 'asc', false, true, $this->context) as $prod)
 		{
 			$product_options[] = array(
@@ -506,7 +504,7 @@ class PriceWaiter extends PaymentModule
 			);
 		}
 
-		$category_options = array();
+		$category_options = array(array('id' => '', 'name' => ''));
 
 		$sql = 'SELECT * FROM `'._DB_PREFIX_.'category` c
 			LEFT OUTER JOIN `'._DB_PREFIX_.'category_lang` cl

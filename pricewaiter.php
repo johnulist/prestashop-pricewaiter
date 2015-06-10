@@ -159,6 +159,10 @@ class PriceWaiter extends PaymentModule
 			if ($rule['pw_feature'] === 'conversion_tools')
 				$enable_conversion_tools = 0;
 		}
+		if (Configuration::get('PRICEWAITER_BUTTON_DISABLED'))
+			$enable_button = 0;
+		if (Configuration::get('PRICEWAITER_CONVERSION_DISABLED'))
+			$enable_conversion_tools = 0;
 
 		$image_type = $product->link_rewrite[$this->context->cart->id_lang];
 
@@ -455,6 +459,8 @@ class PriceWaiter extends PaymentModule
 			$button_products = Tools::getValue('pw_button_disabled_products');
 			$exit_cats = Tools::getValue('pw_conversion_disabled_cats');
 			$exit_products = Tools::getValue('pw_conversion_disabled_products');
+			Configuration::updateValue('PRICEWAITER_BUTTON_DISABLED', Tools::getValue('pw_button_disabled'));
+			Configuration::updateValue('PRICEWAITER_CONVERSION_DISABLED', Tools::getValue('pw_conversion_disabled'));
 
 			$pw_disabled_objects = $this->getSelectedObjectsToDisable($button_cats, $button_products, $exit_cats, $exit_products);
 
@@ -510,6 +516,9 @@ class PriceWaiter extends PaymentModule
 		$fields_form = array(
 			array('form' => array())
 		);
+		$switch_type = 'switch';
+		if (_PS_VERSION_ < 1.6)
+			$switch_type = 'radio';
 		$fields_form[0]['form'] = array(
 			'legend' => array(
 				'title' => $this->l('Settings'),
@@ -572,6 +581,44 @@ class PriceWaiter extends PaymentModule
 						'name' => 'name',
 					),
 				),
+				array(
+					'type' => $switch_type,
+					'label' => $this->l('Disable PriceWaiter'),
+					'name' => 'pw_button_disabled',
+					'description' => 'Disable the PriceWaiter button for all products in your store.',
+					'class' => 't',
+					'values' => array(
+						array(
+							'id' => 'button_off',
+							'value' => 1,
+							'label' => $this->l('Yes')
+						),
+						array(
+							'id' => 'button_on',
+							'value' => 0,
+							'label' => $this->l('No')
+						)
+					),
+				),
+				array(
+					'type' => $switch_type,
+					'label' => $this->l('Disable Conversion Tools'),
+					'name' => 'pw_conversion_disabled',
+					'description' => 'Disable PriceWaiter conversion tools for all products in your store.',
+					'class' => 't',
+					'values' => array(
+						array(
+							'id' => 'conversion_off',
+							'value' => 1,
+							'label' => $this->l('Yes'),
+						),
+						array(
+							'id' => 'conversion_on',
+							'value' => 0,
+							'label' => $this->l('No'),
+						),
+					),
+				),
 			),
 			'submit' => array(
 				'title' => $this->l('Save'),
@@ -612,6 +659,8 @@ class PriceWaiter extends PaymentModule
 		$helper->fields_value['pw_button_disabled_cats[]'] = $this->getDisabledObjects('category', 'button');
 		$helper->fields_value['pw_conversion_disabled_products[]'] = $this->getDisabledObjects('product', 'conversion_tools');
 		$helper->fields_value['pw_conversion_disabled_cats[]'] = $this->getDisabledObjects('category', 'conversion_tools');
+		$helper->fields_value['pw_button_disabled'] = Configuration::get('PRICEWAITER_BUTTON_DISABLED');
+		$helper->fields_value['pw_conversion_disabled'] = Configuration::get('PRICEWAITER_CONVERSION_DISABLED');
 
 		// Load current value
 		$helper->fields_value['pw_api_key'] = Configuration::get('PRICEWAITER_API_KEY');

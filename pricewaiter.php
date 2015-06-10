@@ -44,7 +44,7 @@ class PriceWaiter extends PaymentModule
 	{
 		$this->name = 'pricewaiter';
 		$this->tab = 'pricing_promotion';
-		$this->version = '0.9.3';
+		$this->version = '1.0.0';
 		$this->author = 'PriceWaiter';
 		$this->module_key = '5b42774d38970868478f8b56732f2641';
 		$this->bootstrap = true;

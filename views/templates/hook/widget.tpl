@@ -29,7 +29,7 @@
 *}
 
 {if $pw_api_key != ''}
-<p class="buttons_bottom_block pricewaiter-wrap" style="text-align:center;padding:10px;"><span id="pricewaiter"></span></p>
+<p class="buttons_bottom_block" style="{$pw_custom_css|escape:'html':'UTF-8'}"><span id="pricewaiter"></span></p>
 
 <script type="text/javascript">
 var PriceWaiterOptions = {

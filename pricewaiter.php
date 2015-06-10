@@ -77,7 +77,8 @@ class PriceWaiter extends PaymentModule
 		$this->registerHook('displayProductButtons') &&
 		$this->grantWSPermissions(self::generateToken(), $db) &&
 		$this->sendPWStoreInfo() &&
-		$this->createPWDisableTable($db);
+		$this->createPWDisableTable($db) &&
+		Configuration::updateValue('PRICEWAITER_CUSTOM_CSS', 'text-align:center;padding:10px;');
 	}
 
 	public function uninstall()
@@ -90,6 +91,7 @@ class PriceWaiter extends PaymentModule
 		&& Configuration::deleteByName('PRICEWAITER_SIGNUP_TOKEN')
 		&& Configuration::deleteByName('PRICEWAITER_BUTTON_DISABLED')
 		&& Configuration::deleteByName('PRICEWAITER_CONVERSION_DISABLED')
+		&& Configuration::deleteByName('PRICEWAITER_CUSTOM_CSS')
 		&& $this->deleteWSKey($db)
 		&& $this->deletePWDisableTable($db);
 	}
@@ -187,6 +189,13 @@ class PriceWaiter extends PaymentModule
 			'pw_enable_conversion_tools' => $enable_conversion_tools,
 			'pw_ps_version' => _PS_VERSION_,
 		);
+
+		if (Configuration::get('PRICEWAITER_CUSTOM_CSS')) {
+			$custom_css = Configuration::get('PRICEWAITER_CUSTOM_CSS');
+			$custom_css = str_replace(array('\r\n', '\n', '\r'), '', htmlspecialchars(strip_tags($custom_css)));
+			$custom_css = htmlspecialchars($custom_css);
+			$this->context->smarty->assign(array('pw_custom_css' => Configuration::get('PRICEWAITER_CUSTOM_CSS')));
+		}
 
 		$this->context->smarty->assign($smarty_properties);
 
@@ -463,6 +472,7 @@ class PriceWaiter extends PaymentModule
 			$exit_products = Tools::getValue('pw_conversion_disabled_products');
 			Configuration::updateValue('PRICEWAITER_BUTTON_DISABLED', Tools::getValue('pw_button_disabled'));
 			Configuration::updateValue('PRICEWAITER_CONVERSION_DISABLED', Tools::getValue('pw_conversion_disabled'));
+			Configuration::updateValue('PRICEWAITER_CUSTOM_CSS', Tools::getValue('pw_custom_css'));
 
 			$pw_disabled_objects = $this->getSelectedObjectsToDisable($button_cats, $button_products, $exit_cats, $exit_products);
 
@@ -621,6 +631,12 @@ class PriceWaiter extends PaymentModule
 						),
 					),
 				),
+				array(
+					'type' => 'textarea',
+					'label' => 'PriceWaiter button styling',
+					'name' => 'pw_custom_css',
+					'description' => 'Enter CSS to style the wrapper around the PriceWaiter button.',
+				)
 			),
 			'submit' => array(
 				'title' => $this->l('Save'),
@@ -663,6 +679,7 @@ class PriceWaiter extends PaymentModule
 		$helper->fields_value['pw_conversion_disabled_cats[]'] = $this->getDisabledObjects('category', 'conversion_tools');
 		$helper->fields_value['pw_button_disabled'] = Configuration::get('PRICEWAITER_BUTTON_DISABLED');
 		$helper->fields_value['pw_conversion_disabled'] = Configuration::get('PRICEWAITER_CONVERSION_DISABLED');
+		$helper->fields_value['pw_custom_css'] = Configuration::get('PRICEWAITER_CUSTOM_CSS');
 
 		// Load current value
 		$helper->fields_value['pw_api_key'] = Configuration::get('PRICEWAITER_API_KEY');
